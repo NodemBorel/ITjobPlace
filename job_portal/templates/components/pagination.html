@@ -1,0 +1,37 @@
+<style>
+    /* Style the pagination links */
+    .pagination a {
+        color: black;
+        float: left;
+        padding: 8px 16px;
+        text-decoration: none;
+        transition: background-color .3s;
+        border: 1px solid #ddd; /* Add border */
+        border-radius: 10px;
+        margin: 0 5px; /* Add margin between links */
+    }
+
+    /* Style the active/current link */
+    .pagination a.active {
+        background-color: #4c50d3;
+        color: white;
+    }
+
+    /* Add a grey background color on mouse-over */
+    .pagination a:hover:not(.active) {
+        background-color: #ddd;
+    }
+</style>
+
+<!-- Your Django pagination code -->
+<div class="pagination mt-4">
+    {% if objects.has_previous %}
+        <a href="?page={{ objects.previous_page_number }}">Previous</a>
+    {% endif %}
+
+    <a class="active">{{ objects.number }} &nbsp;&nbsp;of&nbsp;&nbsp; {{ objects.paginator.num_pages }}</a>
+
+    {% if objects.has_next %}
+        <a href="?page={{ objects.next_page_number }}">Next</a>
+    {% endif %}
+</div>

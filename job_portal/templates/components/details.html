@@ -1,0 +1,54 @@
+{% load static %}
+
+<!----------details-------->
+<div class="detail" id="job-details">
+    <ion-icon class="close-detail" name="close-outline"></ion-icon>
+    <div class="detail-header">
+        <img src="{% static 'images/google.svg' %}" alt="">
+        <h2 id="jobTitle"></h2>
+        <p id="jobCompany"></p>
+        
+    </div>
+
+    <br>
+
+    <div class="container">
+        <div class="card-sub">
+            <p ><ion-icon name="location-outline"></ion-icon> <p id="jobLocation"></p> </p>
+            <p><ion-icon name="today-outline"></ion-icon> <p id="jobCreated_at"></p> </p>
+            <p><ion-icon name="hourglass-outline"></ion-icon> <p id="jobType"></p> </p>
+            <p><ion-icon name="people-outline"></ion-icon> <p id="jobOn_click"></p> </p>
+            <div class="card-salary">
+                <!-- <p><b>$350K</b> <span>/ year</span></p> -->
+                <p><b id="jobSalary">$350K</b></p>
+            </div>
+        </div>
+    </div>
+
+    <hr class="divider">
+    <div class="detail-desc">
+        <!-- <div class="about">
+            <h4>About Company</h4>
+            <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Blanditiis, fuga asperiores, itaque cum
+                praesentium optio sunt inventore aliquid maiores ex soluta ullam ea in veniam ipsa nemo fugit alias
+                impedit!</p>
+            <a href="#">Read more</a>
+        </div> 
+        <hr class="divider">-->
+        <div class="qualification">
+            <h4>Qualification</h4>
+            <ul>
+                <li id="jobDescription">Lorem, ipsum dolor sit amet consectetur adipisicing elit.</li>
+            </ul>
+        </div>
+    </div>
+    <hr class="divider">
+    <div class="detail-btn">
+        <a href="" id="jobLink" class="btn-apply" style="text-decoration: none;">Apply</a>
+        <button class="btn-save">Save Job</button>
+        <div class="share-icon">
+            <ion-icon name="share-outline"></ion-icon>
+            <span class="share-icon-text">Share</span>
+        </div>
+    </div>
+</div>

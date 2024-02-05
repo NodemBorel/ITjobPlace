@@ -1,0 +1,35 @@
+{% load static %}
+
+<!------------card---------->
+{% for job in objects %}
+    <!-- <a href="{% url 'job-details' job.id %}" id="{{job.id}}"> -->
+        <div class="card" data-job-id="{{ job.id }}">
+            <div class="card-left yellow-bg">
+                <img src="{% static 'images/google.svg' %}" alt="">
+            </div>
+            <div class="card-center">
+                <h3>{{ job.title }}</h3>
+                <p class="card-detail">{{ job.company }}</p>
+                <p class="card-loc"><ion-icon name="location-outline"></ion-icon>{{ job.location }}</p>
+                <div class="card-sub">
+                    <p><ion-icon name="today-outline"></ion-icon> <span class="time">{{ job.created_at }}</span> </p>
+                    <p><ion-icon name="hourglass-outline"></ion-icon> {{job.job_type}} </p>
+                    <p><ion-icon name="people-outline"></ion-icon>{{ job.on_click }}&nbsp;&nbsp;clicks</p>
+                </div>
+            </div>
+            <div class="card-right">
+                <div class="card-tag">
+                    <h5>Division</h5>
+                    <!-- <a href="#">Data Science</a> -->
+                </div>
+                <div class="card-salary">
+                    <p><b>{{ job.salary }}</b> <span>/ year</span></p>
+                </div>
+                <div class="share-icon">
+                    <ion-icon name="share-outline"></ion-icon>
+                    <span class="share-icon-text">Share</span>
+                </div>
+            </div>
+        </div>
+    <!-- </a> -->
+{% endfor %}

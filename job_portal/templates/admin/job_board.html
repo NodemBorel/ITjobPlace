@@ -1,0 +1,78 @@
+{% extends 'extend/admin.html' %}
+
+{% block content %}
+
+<div class="container-fluid px-4">
+    <br>
+    <div class="row">
+        <div class="col">
+            <div class="col-md">
+                <div class="card text-center text-white md-3" id="total-orders">
+                    <div class="card-header">
+                        <h5 class="card-title">Total Jobs</h5>
+                    </div>
+                    <div class="card-body">
+                        <h3 class="card-title">{{total_jobs}}</h3>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+    <br>
+    {% for message in messages %}
+        <div class="alert alert-success alert-dismissible fade show shadow" role="alert">
+            <strong>{{ message }}</strong>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    {% endfor %}
+    <div class="row">
+        <div class="col-md">
+            <div class="card mt-4">
+                <div class="card-header">
+                    <h4 style="color: #0088cc;">Job List</h4>
+                    <a href="{% url 'admins' %}" class="btn btn-danger float-end">Back</a>
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table id="myDataTable" class="table table-sm table-bordered">
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Title</th>
+                                    <th>Company</th>
+                                    <th>Location</th>
+                                    <th>Salary</th>
+                                    <th>Job_type</th>
+                                    <th>Job_Description</th>
+                                    <th>Link</th>
+                                    <th>Num. click</th>
+                                    <th>Update</th>
+                                    <th>Remove</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for job in jobs %}
+                                    <tr>
+                                        <td> # </td>
+                                        <td> {{job.title}} </td>
+                                        <td> {{job.company}} </td>
+                                        <td> {{job.location}} </td>
+                                        <td> {{job.salary}} </td>
+                                        <td> {{job.job_type}} </td>
+                                        <td>  </td>
+                                        <td> {{job.link}} </td>
+                                        <td> {{job.on_click}} </td>
+                                        <td><a class="btn btn-sm btn-info" href="{% url 'update_job' job.id %}">Update</a></td>
+                                        <td><a class="btn btn-sm btn-danger" href="{% url 'delete_job' job.id %}">Delete</a></td>
+                                    </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}    

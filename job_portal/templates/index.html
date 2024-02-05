@@ -1,0 +1,52 @@
+{% extends 'extend/main.html' %}
+
+{% block content %}
+
+{% include 'components/sidebar.html' %}
+
+<!----------main--------->
+<div class="main">
+    <div class="main-header">
+        <ion-icon class="menu-bar" name="menu-outline"></ion-icon>
+        <div class="search">
+            <form action="{% url 'filter' %}" method="get">
+                <input type="text" name="q" placeholder="Search your best job here...">
+                <button class="btn-search" type="submit"><ion-icon name="search-outline"></ion-icon></button>
+            </form>
+        </div>
+    </div>
+    <div class="filter-wrapper">
+        <p>Recommendation</p>
+        <div class="filter">
+            <button class="btn-filter">Data Science</button>
+            <button class="btn-filter">Data Engineer</button>
+            <button class="btn-filter">Data Analyst</button>
+            <button class="btn-filter">Data Visualization</button>
+            <button class="btn-filter">CRM Analyst</button>
+        </div>
+    </div>
+    <div class="sort">
+        <p>Sort</p>
+        <div class="sort-list">
+            <select name="sortOption" id="sortOption">
+                <option value="0">All</option>
+                <option value="1">Newest Post</option>
+                <option value="2">Oldest Post</option>
+                <option value="3">Most Relevant</option>
+                <option value="4">Highest Paid</option>
+            </select>
+        </div>
+    </div>
+    <div class="wrapper" id="jobList">
+        
+        {% include 'components/card.html' %}
+
+    </div>
+
+    {% include 'components/pagination.html' %}
+    
+</div>
+
+{% include 'components/details.html' %}
+
+{% endblock %}

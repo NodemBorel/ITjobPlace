@@ -1,0 +1,41 @@
+{% extends 'extend/admin.html' %}
+
+{% block content %}
+
+<div class="container-fluid px-4">
+    <br>
+    <div class="row">
+        {% for message in messages %}
+            <div class="alert alert-success alert-dismissible fade show shadow" role="alert">
+                <strong>{{ message }}</strong>
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        {% endfor %}
+        <div class="col-md">
+            <div class="card card-body">
+                <h5>Importer Jobs:</h5>
+                <hr>
+                <form action="{% url 'upload_job' %}" method="post" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <div class="mb-3">
+                        <label for="formFile" class="form-label">Default file Import</label>
+                        <input class="form-control" type="file" name="myfile" id="">
+                    </div>
+                    <input type="submit" class="btn btn-outline-danger btn-block" value="Import excel">
+                </form>
+            </div>
+        </div>
+        <div class="col-md">
+            <div class="card card-body">
+                <h5>View Jobs</h5>
+                <hr>
+                <a href="{% url 'jobs_display' %}" class="btn btn-info btn-sm btn-block" id="block-btn">View Jobs</a>
+            </div>
+        </div>
+    </div>
+
+    {% include 'admin/form.html' %}
+
+</div>
+
+{% endblock %}
