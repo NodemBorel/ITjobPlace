@@ -18,8 +18,8 @@ class RegistrationForm(ModelForm):
         confirm_password = cleaned_data.get("confirm_password")
 
         # Check if email already exists
-        if User.objects.filter(email=email).exists():
-            raise forms.ValidationError("This email address is already registered.")
+        #if User.objects.filter(email=email).exists():
+            #raise forms.ValidationError("This email address is already registered.")
 
         if not password or len(password) < 6:
             raise ValidationError("Password must be at least 6 characters long.")
@@ -28,6 +28,10 @@ class RegistrationForm(ModelForm):
         if password != confirm_password:
             raise forms.ValidationError("The passwords do not match.")    
         
+class LoginForm(forms.Form):
+    email = forms.CharField(widget=forms.EmailInput)
+    password = forms.CharField(widget=forms.PasswordInput)        
+
 class JobForm(ModelForm):
     class Meta:
         model = Job

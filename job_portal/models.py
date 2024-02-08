@@ -23,9 +23,10 @@ class Job(models.Model):
 class User(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False, unique=True)
     username = models.CharField(max_length=100, null=False)
-    email = models.CharField(max_length=100, null=False)
+    email = models.CharField(max_length=100, null=False, unique=True)
     password = models.CharField(max_length=100, null=False)
     confirm_password = models.CharField(max_length=100, null=False)
+    role = models.IntegerField(default=0)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 

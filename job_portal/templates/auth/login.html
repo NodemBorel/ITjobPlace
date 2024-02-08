@@ -91,7 +91,7 @@
             {{ message }}
         </div>
     {% endfor %}
-    <form action="{% url 'registration' %}" method="post">
+    <form action="{% url 'login' %}" method="post">
         {% csrf_token %}
 
         {% if form.errors %}

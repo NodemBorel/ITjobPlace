@@ -7,8 +7,10 @@ from .resources import JobResource
 from django.contrib import messages
 from tablib import Dataset
 from django.db.models import Q
+from django.contrib.auth.hashers import check_password
+from django.contrib.auth.decorators import login_required
 
-from .forms import JobForm, RegistrationForm
+from .forms import JobForm, RegistrationForm, LoginForm
 
 # Create your views here.
 
@@ -120,11 +122,36 @@ def registration(request):
     return render(request, 'auth/registration.html', context)
 
 def login(request):
-    context = {}
+    form = LoginForm()
+    if request.method == 'POST':
+        form = LoginForm(request.POST)
+        if form.is_valid():
+            email = form.cleaned_data.get('email')
+            password = form.cleaned_data.get('password')
+            try:
+                user = User.objects.get(email=email)
+                if check_password(password, user.password):
+                    request.session['user_id'] = str(user.id)
+                    if user.role == 1:
+                        return redirect('/admins')
+                    else:
+                        return redirect('/')
+                else:
+                    form.add_error(None, 'Invalid username or password')
+            except User.DoesNotExist:
+                form.add_error(None, 'Invalid username or password')
+    else:
+        form = LoginForm()
+
+    context = {'form': form}    
     return render(request, 'auth/login.html', context)
 
-#======================================================================================================
 
+def logout(request):
+    del request.session['user_id']
+    return redirect('login')
+#======================================================================================================
+@login_required
 def admin(request):
     form = JobForm()
     return render(request, 'admin/dashboard.html', {'form':form})
