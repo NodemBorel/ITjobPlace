@@ -1,5 +1,7 @@
 from django.db import models
 import uuid
+from django.contrib.auth.hashers import make_password
+from django.core.exceptions import ValidationError
 
 # Create your models here.
 class Job(models.Model):
@@ -17,6 +19,22 @@ class Job(models.Model):
 
     def __str__(self):
         return self.title
-    class Meta:
-        db_table = 'Job'
-    
+
+class User(models.Model):
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False, unique=True)
+    username = models.CharField(max_length=100, null=False)
+    email = models.CharField(max_length=100, null=False)
+    password = models.CharField(max_length=100, null=False)
+    confirm_password = models.CharField(max_length=100, null=False)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    def save(self, *args, **kwargs):
+        # Hash the password and confirm_password before saving
+        self.password = make_password(self.password)
+        self.confirm_password = make_password(self.confirm_password)
+        super().save(*args, **kwargs)
+
+    def __str__(self):
+        return self.username
+

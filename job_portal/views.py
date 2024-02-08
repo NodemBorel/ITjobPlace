@@ -8,7 +8,7 @@ from django.contrib import messages
 from tablib import Dataset
 from django.db.models import Q
 
-from .forms import JobForm
+from .forms import JobForm, RegistrationForm
 
 # Create your views here.
 
@@ -103,6 +103,27 @@ def job_Details(request, pk):
     }
     
     return JsonResponse(job_details)
+
+#=========================================== registration / login =====================================
+def registration(request):
+    form = RegistrationForm()
+    if request.method == 'POST':
+        form = RegistrationForm(request.POST)
+        if form.is_valid():
+            form.save()
+            username = form.cleaned_data.get('username')
+            messages.info(request, 'Welcome here, login to continue' + ' ' + username)
+            return redirect('/login')
+    else:
+        form = RegistrationForm()   
+    context = {'form':form}
+    return render(request, 'auth/registration.html', context)
+
+def login(request):
+    context = {}
+    return render(request, 'auth/login.html', context)
+
+#======================================================================================================
 
 def admin(request):
     form = JobForm()
