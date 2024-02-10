@@ -14,6 +14,57 @@
     <link href="https://fonts.googleapis.com/css2?family=Lato:wght@400;700&display=swap" rel="stylesheet">
 
     <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+            background-color: #f3f3f3;
+        }
+        
+        .contains {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            text-align: center;
+        }
+        
+        .message {
+            font-size: 18px;
+            color: #333;
+        }
+        
+        .message span {
+            color: #777;
+        }
+        
+        .links {
+            margin-top: 20px;
+        }
+        
+        .login-btn, .register-btn {
+            display: inline-block;
+            padding: 10px 20px;
+            background-color: #4CAF50;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            transition: background-color 0.3s ease;
+        }
+        
+        .login-btn:hover, .register-btn:hover {
+            background-color: #45a049;
+        }
+        
+        .separator {
+            margin: 0 10px;
+            color: #777;
+            font-weight: bold;
+        }
+        
+    </style>
     <title>Job Portal</title>
 </head>
 

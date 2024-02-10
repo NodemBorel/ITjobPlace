@@ -1,0 +1,132 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login and Registration Form</title>
+    <link rel="stylesheet" href="{% static 'css/auth_form.css' %}">
+    <style>
+        button:hover {
+            background-color: #45a049;
+        }
+
+        .alert {
+            padding: 20px;
+            background-color: #f44336;
+            color: white;
+            margin-bottom: 15px;
+            border-radius: 4px;
+        }
+
+        .closebtn {
+            margin-left: 15px;
+            color: white;
+            font-weight: bold;
+            float: right;
+            font-size: 22px;
+            line-height: 20px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .closebtn:hover {
+            color: black;
+        }
+    </style>
+</head>
+
+<body style="background-color: white;">
+
+    {% if form.errors %}
+        <ul class="errorlist">
+            {% for field_errors in form.errors.values %}
+                {% for error in field_errors %}
+                <div class="alert">
+                    <span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span>
+                    {{ error }}
+                </div>
+                {% endfor %}
+            {% endfor %}
+        </ul>
+    {% endif %}
+
+    {% for message in messages %}
+        <div class="alert">
+            <span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span>
+            {{ message }}
+        </div>
+    {% endfor %}
+    <h2> Sign in & up / <a href="{% url 'home' %}" style="text-decoration: none;"><<< Go Back</a> </h2>
+    <div class="container" id="container">
+
+        <div class="form-container sign-up-container">
+            <form action="{% url 'registration' %}" method="post">
+                {% csrf_token %}
+                <h1>Create Account</h1>
+                <div class="social-container">
+                    <!-- <a href="#" class="social"><i class="fab fa-facebook-f"></i></a>
+                    <a href="#" class="social"><i class="fab fa-google-plus-g"></i></a>
+                    <a href="#" class="social"><i class="fab fa-linkedin-in"></i></a> -->
+                </div>
+                <!-- <span>or use your email for registration</span> 
+                <input type="text" name="username" placeholder="Username" />
+                <input type="email" name="email" placeholder="Email" />
+                <input type="password" name="password1" placeholder="Password" />
+                <input type="password" name="password2" placeholder="Confirm Password" /> --->
+                {{form.username}}
+                {{form.email}}
+                {{form.password1}}
+                {{form.password2}}
+                <button type="submit">Sign Up</button>
+            </form>
+        </div>
+        <div class="form-container sign-in-container">
+            <form action="{% url 'login' %}" method="post">
+                {% csrf_token %}
+                <h1>Sign in</h1>
+                <div class="social-container">
+                    <!-- <a href="#" class="social"><i class="fab fa-facebook-f"></i></a>
+                    <a href="#" class="social"><i class="fab fa-google-plus-g"></i></a>
+                    <a href="#" class="social"><i class="fab fa-linkedin-in"></i></a> -->
+                </div>
+                <!-- <span>or use your account</span> -->
+                <input type="text" name="username" placeholder="Username" />
+                <input type="password" name="password" placeholder="Password" />
+                <a href="#">Forgot your password?</a>
+                <button type="submit">Sign In</button>
+            </form>
+        </div>
+        <div class="overlay-container">
+            <div class="overlay">
+                <div class="overlay-panel overlay-left">
+                    <h1>Welcome Back!</h1>
+                    <p>To keep connected with us please login with your personal info</p>
+                    <button class="ghost" id="signIn">Sign In</button>
+                </div>
+                <div class="overlay-panel overlay-right">
+                    <h1>Hello, Friend!</h1>
+                    <p>Enter your personal details and start journey with us</p>
+                    <button class="ghost" id="signUp">Sign Up</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const signUpButton = document.getElementById('signUp');
+        const signInButton = document.getElementById('signIn');
+        const container = document.getElementById('container');
+
+        signUpButton.addEventListener('click', () => {
+            container.classList.add("right-panel-active");
+        });
+
+        signInButton.addEventListener('click', () => {
+            container.classList.remove("right-panel-active");
+        });
+    </script>
+</body>
+
+</html>

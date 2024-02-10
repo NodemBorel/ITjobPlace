@@ -6,8 +6,8 @@ urlpatterns = [
 
     #++++++++ auth ++++++++++
     path('registration/', views.registration, name='registration'),
-    path('login/', views.login, name='login'),
-    path('logout/', views.logout, name='logout'),
+    path('login/', views.loginUser, name='login'),
+    path('logout/', views.logoutUser, name='logout'),
     #++++++++++++++++++++++++
 
     path('admins/', views.admin, name='admins'),

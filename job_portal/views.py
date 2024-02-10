@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect
-from django.http import HttpResponse, JsonResponse
+from django.http import JsonResponse
 from datetime import datetime, timezone
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from .models import *
@@ -7,10 +7,12 @@ from .resources import JobResource
 from django.contrib import messages
 from tablib import Dataset
 from django.db.models import Q
-from django.contrib.auth.hashers import check_password
+from django.contrib.auth.models import Group
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth import authenticate, login, logout
+from .decorators import unauthenticated_user, admin_only
 
-from .forms import JobForm, RegistrationForm, LoginForm
+from .forms import JobForm, RegistrationForm
 
 # Create your views here.
 
@@ -107,55 +109,58 @@ def job_Details(request, pk):
     return JsonResponse(job_details)
 
 #=========================================== registration / login =====================================
+@unauthenticated_user
 def registration(request):
     form = RegistrationForm()
+
     if request.method == 'POST':
         form = RegistrationForm(request.POST)
         if form.is_valid():
-            form.save()
-            username = form.cleaned_data.get('username')
-            messages.info(request, 'Welcome here, login to continue' + ' ' + username)
-            return redirect('/login')
-    else:
-        form = RegistrationForm()   
-    context = {'form':form}
-    return render(request, 'auth/registration.html', context)
+            user = form.save(commit=False) 
+            user.save()
 
-def login(request):
-    form = LoginForm()
+            group = Group.objects.get(name='user')
+            user.groups.add(group)
+
+            if user is not None:
+                login(request, user)
+                return redirect('login')
+
+    context = {'form': form,}
+    return render(request, 'auth/login_registration.html', context)
+
+@unauthenticated_user
+def loginUser(request):
     if request.method == 'POST':
-        form = LoginForm(request.POST)
-        if form.is_valid():
-            email = form.cleaned_data.get('email')
-            password = form.cleaned_data.get('password')
-            try:
-                user = User.objects.get(email=email)
-                if check_password(password, user.password):
-                    request.session['user_id'] = str(user.id)
-                    if user.role == 1:
-                        return redirect('/admins')
-                    else:
-                        return redirect('/')
-                else:
-                    form.add_error(None, 'Invalid username or password')
-            except User.DoesNotExist:
-                form.add_error(None, 'Invalid username or password')
-    else:
-        form = LoginForm()
+        username = request.POST['username']
+        password = request.POST['password']
 
-    context = {'form': form}    
-    return render(request, 'auth/login.html', context)
+        user = authenticate(request, username=username, password=password)
+        
+        if username and password:
+            if user is not None:
+                login(request, user)
+                return redirect('home')
+            else:
+                messages.error(request, 'Invalid username or password.')
+        else:
+            messages.error(request, 'Email and password are required.')        
+    return render(request, 'auth/login_registration.html')
 
-
-def logout(request):
-    del request.session['user_id']
-    return redirect('login')
-#======================================================================================================
 @login_required
+def logoutUser(request):
+    logout(request)
+    return redirect('home')
+#======================================================================================================
+
+@login_required
+@admin_only
 def admin(request):
     form = JobForm()
     return render(request, 'admin/dashboard.html', {'form':form})
 
+@login_required
+@admin_only
 def upload_job(request):
     if request.method == 'POST':
         job_resource = JobResource
@@ -182,6 +187,8 @@ def upload_job(request):
     return redirect('/admins')     
     #return render(request, 'admin/dashboard.html')   
 
+@login_required
+@admin_only
 def create_job(request):
     if request.method == 'POST':
         form = JobForm(request.POST)
@@ -191,12 +198,16 @@ def create_job(request):
             return redirect('/admins')
     return render(request, 'admin/dashboard.html') 
 
+@login_required
+@admin_only
 def display_jobs(request):
     jobs = Job.objects.all()
     total_jobs = jobs.count()
     context = {'jobs':jobs, 'total_jobs':total_jobs}
     return render(request, 'admin/job_board.html', context)
 
+@login_required
+@admin_only
 def updateJob(request, pk):
     job = Job.objects.get(id=pk)
     form = JobForm(instance=job)
@@ -210,6 +221,8 @@ def updateJob(request, pk):
     context = {'form':form}
     return render(request, 'admin/update_job.html', context)
 
+@login_required
+@admin_only
 def deleteJob(request, pk):
     job = Job.objects.get(id=pk)
     if request.method == 'POST':
