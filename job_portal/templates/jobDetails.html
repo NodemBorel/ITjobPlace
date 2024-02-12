@@ -1,0 +1,178 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Job Details</title>
+
+    <meta name="description" content="Discover top IT job opportunities on our specialized job board. Explore a wide range of tech careers in software development, network engineering, cybersecurity, and more. Find your next role in the information technology field today!">
+    <meta name="keywords" content="IT jobs, Tech careers, Software development, Network engineering, Cybersecurity, IT professionals, Technology job board, Tech industry, IT vacancies, Information technology positions, Programming jobs, IT recruitment, Tech job listings, IT employment opportunities, IT job search, IT job openings, IT job market, IT job postings, IT job portal, Technology careers, IT job search engine, IT job opportunities, IT job vacancies, IT job search website, IT job placement, IT job application, IT job database, IT job listings website, IT job search platform, IT job recruitment site">
+    <meta name="author" content="ITjobPlace">
+
+    <meta property="og:url" content="http://{{ request.META.HTTP_HOST }}{{ request.path }}">
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="{{title}}">
+    <meta property="og:description" content="shared by ITjobPlace">
+    <meta property="og:image" content="http://{{ request.META.HTTP_HOST }}{% static 'images/job1.svg' %}">
+    <meta property="twitter:image" content="http://{{ request.META.HTTP_HOST }}{% static 'images/job1.svg' %}">
+
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+    <style>
+        .detail_{
+            width: 100%;
+            min-width: 250px;
+            height: 100%;
+            padding: 1.5rem;
+            position: fixed;
+            right: 0;
+            background-color: var(--whiteColor);
+            overflow: auto;
+            box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+        }
+
+        .message {
+            font-size: 18px;
+            color: #333;
+        }
+
+        .message span {
+            color: #777;
+        }
+
+        .links {
+            margin-top: 20px;
+        }
+
+        .login-btn,
+        .register-btn {
+            display: inline-block;
+            padding: 10px 20px;
+            background-color: #4CAF50;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            transition: background-color 0.3s ease;
+        }
+
+        .login-btn:hover,
+        .register-btn:hover {
+            background-color: #45a049;
+        }
+
+        .separator {
+            margin: 0 10px;
+            color: #777;
+            font-weight: bold;
+        }
+    </style>
+</head>
+
+<body>
+    <!----------details-------->
+    <div class="detail_" id="job-details">
+        <ion-icon class="close-detail" name="close-outline"></ion-icon>
+        <div class="detail-header">
+            <img src="{% static 'images/job1.svg' %}" alt="">
+            <h2 id="jobTitle">{{title}}</h2>
+            <p id="jobCompany">{{company}}</p>
+
+        </div>
+
+        <br>
+
+        <div class="container">
+            <div class="card-sub">
+                <p><ion-icon name="location-outline"></ion-icon> {{location}} </p>
+                <p><ion-icon name="today-outline"></ion-icon> {{formatted_time_difference}} </p>
+                <p><ion-icon name="hourglass-outline"></ion-icon> {{job_type}} </p>
+                <p><ion-icon name="people-outline"></ion-icon> {{on_click}} </p>
+                <div class="card-salary">
+                    <!-- <p><b>$350K</b> <span>/ year</span></p> -->
+                    <p><b id="jobSalary">{{salary}}</b></p>
+                </div>
+            </div>
+        </div>
+
+        <hr class="divider">
+
+        <div class="detail-desc">
+            <!-- <div class="about">
+                <h4>About Company</h4>
+                <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Blanditiis, fuga asperiores, itaque cum
+                    praesentium optio sunt inventore aliquid maiores ex soluta ullam ea in veniam ipsa nemo fugit alias
+                    impedit!</p>
+                <a href="#">Read more</a>
+            </div> 
+            <hr class="divider">-->
+            <div class="qualification">
+                <h4>Qualification</h4>
+                <ul>
+                    <li id="jobDescription">{{Job_Description}}</li>
+                </ul>
+            </div>
+        </div>
+        <hr class="divider">
+        {% if user.is_authenticated %}
+        <div class="detail-btn">
+            <a href="{{link}}" id="jobLink" class="btn-apply" style="text-decoration: none;">Apply</a>
+            <button class="btn-save">Save Job</button>
+            <div class="share-icon">
+                <ion-icon name="share-outline"></ion-icon>
+                <span class="share-icon-text">Share</span>
+            </div>
+        </div>
+        {% else %}
+        <div class="contains">
+            <p class="message">Login <span>or</span> Register to To apply for the job</p>
+            <div class="links">
+                <a href="{% url 'login' %}" class="login-btn">Login</a>
+                <span class="separator">or</span>
+                <a href="{% url 'registration' %}" class="register-btn">Register</a>
+            </div>
+        </div>
+        {% endif %}
+    </div>    
+</body>
+
+<script>
+    jobDescription = document.getElementById("jobDescription").textContent;
+
+    const text = jobDescription;
+
+    // Split the text into sentences using periods as the delimiter
+    const sentences = text.split('.');
+
+    // Create an empty array to store the formatted sentences
+    const formattedSentences = [];
+
+    // Iterate through the sentences and format them
+    sentences.forEach(sentence => {
+        // Trim leading and trailing white spaces from the sentence
+        const trimmedSentence = sentence.trim();
+
+        // Ignore empty sentences
+        if (trimmedSentence !== '') {
+            // Add the sentence to the formatted sentences array with the period at the end
+            formattedSentences.push(`${trimmedSentence}.`);
+        }
+    });
+
+    // Create a new paragraph element
+    const paragraphElement = document.createElement('p');
+
+    // Iterate through the formatted sentences and add them to the paragraph as list items
+    formattedSentences.forEach(sentence => {
+        const listItemElement = document.createElement('li');
+        listItemElement.textContent = sentence;
+        paragraphElement.appendChild(listItemElement);
+    });
+
+    // Set the 'jobDescription' element's HTML content to the formatted paragraph
+    const jobDescriptionElement = document.getElementById('jobDescription');
+    jobDescriptionElement.innerHTML = '';
+    jobDescriptionElement.appendChild(paragraphElement);
+</script>
+
+</html>

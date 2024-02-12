@@ -108,6 +108,32 @@ def job_Details(request, pk):
     
     return JsonResponse(job_details)
 
+#----------------- job new comers-----------
+def jobDetails(request, pk):
+    job_d = Job.objects.get(id=pk)
+    
+    # Get the current time
+    current_time = datetime.now(timezone.utc)
+    
+    # Calculate the time difference
+    time_difference = current_time - job_d.created_at
+    
+    formatted_time_difference = format_timedelta(time_difference)
+
+    job_details = {
+        'title': job_d.title,
+        'company': job_d.company,
+        'location': job_d.location,
+        'salary': job_d.salary,
+        'job_type': job_d.job_type,
+        'Job_Description': job_d.Job_Description,
+        'link': job_d.link,
+        'on_click': job_d.on_click,
+        'formatted_time_difference': formatted_time_difference,
+    }
+    
+    return render(request, 'jobDetails.html', job_details)
+
 #=========================================== registration / login =====================================
 @unauthenticated_user
 def registration(request):
