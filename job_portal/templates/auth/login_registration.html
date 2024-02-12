@@ -39,6 +39,29 @@
         .closebtn:hover {
             color: black;
         }
+
+        footer {
+            background-color: #333;
+            color: #fff;
+            padding: 5px 0;
+            text-align: center;
+        }
+        
+        .cont {
+            max-width: 12000px;
+            margin: 0 auto;
+        }
+        
+        .policy a {
+            color: #fff;
+            text-decoration: none;
+            margin: 0 10px;
+        }
+        
+        .policy a:hover {
+            text-decoration: underline;
+        }
+        
     </style>
 </head>
 
@@ -118,6 +141,15 @@
             </div>
         </div>
     </div>
+
+    <footer>
+        <div class="cont">
+            <div class="policy">
+                <a href="{% url 'policy' %}">Privacy Policy</a>
+            </div>
+            <p>&copy; 2024 ITjobPlace. All rights reserved.</p>
+        </div>
+    </footer>
 
     <script>
         const signUpButton = document.getElementById('signUp');

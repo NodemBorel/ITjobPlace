@@ -4,7 +4,7 @@ from .models import *
 
 class StaticSitemap(Sitemap):
     def items(self):
-        return ['home', 'login', 'registration']
+        return ['home', 'login', 'registration', 'policy']
     
     #takes each individual item form th item function and create an url
     def location(self, item):

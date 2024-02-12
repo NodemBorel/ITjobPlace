@@ -177,6 +177,9 @@ def loginUser(request):
 def logoutUser(request):
     logout(request)
     return redirect('home')
+
+def policy(request):
+    return render(request, 'policy.html')
 #======================================================================================================
 
 @login_required

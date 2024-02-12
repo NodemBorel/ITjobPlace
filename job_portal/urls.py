@@ -20,6 +20,7 @@ urlpatterns = [
     path('registration/', views.registration, name='registration'),
     path('login/', views.loginUser, name='login'),
     path('logout/', views.logoutUser, name='logout'),
+    path('policy/', views.policy, name='policy'),
     #++++++++++++++++++++++++
 
     path('admins/', views.admin, name='admins'),
