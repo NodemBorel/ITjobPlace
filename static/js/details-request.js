@@ -25,6 +25,12 @@ const updateDetailsSection = (jobId) => {
                 document.getElementById("jobOn_click").textContent = `${data.on_click}`;
                 document.getElementById("jobCreated_at").textContent = `${data.formatted_time_difference}`;
 
+                //share button from description 
+                const shareJobElement = document.getElementById("share-job");
+                const jobId = `${data.id}`; // Replace this with the correct variable or value
+                const newUrl = `http://127.0.0.1:8000/job_details/${jobId}`;
+                shareJobElement.setAttribute("data-url", newUrl);
+
                 const text = data.Job_Description;
 
                 // Split the text into sentences using periods as the delimiter

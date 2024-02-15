@@ -1,30 +1,40 @@
-document.getElementById('shareButton').addEventListener('click', function() {
-    $('#platformModal').modal('show');
+// Function to copy the URL to clipboard
+function copyToClipboard() {
+    var url = this.dataset.url;
+
+    // Use the Clipboard API to copy the URL
+    navigator.clipboard.writeText(url)
+        .then(() => {
+            // Show the alert
+            var alert = document.getElementById("alert");
+            alert.classList.add("show");
+
+            // Alert user that the URL has been copied
+            alert.textContent = "URL copied to clipboard!";
+
+            // Hide the alert after 3 seconds
+            setTimeout(function () {
+                alert.classList.remove("show");
+            }, 3000);
+        })
+        .catch((error) => {
+            // Handle any error that occurred
+            console.error('Error copying to clipboard: ', error);
+        });
+}
+
+// Attach click events to the "Copy to Clipboard" buttons
+var copyButtons = document.querySelectorAll('.copyButton');
+copyButtons.forEach(function (button) {
+    button.addEventListener('click', copyToClipboard);
 });
 
-function shareOnPlatform(platform) {
-    var shareURL = "{{ request.build_absolute_uri }}";
-
-    switch (platform) {
-        case 'facebook':
-            window.open('https://www.facebook.com/sharer/sharer.php?u=' + encodeURIComponent(shareURL));
-            break;
-        case 'twitter':
-            window.open('https://twitter.com/intent/tweet?url=' + encodeURIComponent(shareURL) + '&text=' + encodeURIComponent("Check out this content: " + "{{ content.title }}"));
-            break;
-        case 'linkedin':
-            window.open('https://www.linkedin.com/shareArticle?url=' + encodeURIComponent(shareURL) + '&title=' + encodeURIComponent("{{ content.title }}"));
-            break;
-    }
-
-    // Copy Link to clipboard
-    var copyText = document.createElement('textarea');
-    copyText.value = shareURL;
-    document.body.appendChild(copyText);
-    copyText.select();
-    document.execCommand('copy');
-    document.body.removeChild(copyText);
-
-    alert('Shared on ' + platform + ' and Link copied to clipboard!');
-    $('#platformModal').modal('hide');
+// Function to close the alert
+function closeAlert() {
+    var alert = document.getElementById("alert");
+    alert.classList.remove("show");
 }
+
+// Attach click event to the close button
+var closeButton = document.querySelector('.close');
+closeButton.addEventListener('click', closeAlert);

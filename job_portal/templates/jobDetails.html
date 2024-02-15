@@ -20,6 +20,32 @@
 
     <link rel="stylesheet" href="{% static 'css/styles.css' %}">
     <style>
+        .alert {
+            display: none;
+            padding: 15px;
+            border: 1px solid #4c50d3;
+            background-color: #c3e1ff;
+            color: #333;
+            position: fixed;
+            bottom: 15px;
+            right: 15px;
+            z-index: 9999;
+        }
+
+        .alert.show {
+            display: block;
+        }
+
+        .alert .close {
+            color: #000;
+            float: right;
+            font-size: 20px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+        
+
+
         .detail_{
             width: 100%;
             min-width: 250px;
@@ -67,17 +93,17 @@
             font-weight: bold;
         }
     </style>
+
 </head>
 
 <body>
     <!----------details-------->
-    <div class="detail_" id="job-details">
+5    <div class="detail_" id="job-details">
         <ion-icon class="close-detail" name="close-outline"></ion-icon>
         <div class="detail-header">
             <img src="{% static 'images/job1.svg' %}" alt="">
             <h2 id="jobTitle">{{title}}</h2>
             <p id="jobCompany">{{company}}</p>
-
         </div>
 
         <br>
@@ -115,12 +141,18 @@
         </div>
         <hr class="divider">
         {% if user.is_authenticated %}
+        
+        <div class="alert" id="alert">
+            URL copied to clipboard!
+            <span class="close">&times;</span>
+        </div>
+
         <div class="detail-btn">
             <a href="{{link}}" id="jobLink" class="btn-apply" style="text-decoration: none;">Apply</a>
             <button class="btn-save">Save Job</button>
-            <div class="share-icon">
+            <div class="share-icon" style="cursor: pointer;">
                 <ion-icon name="share-outline"></ion-icon>
-                <span class="share-icon-text">Share</span>
+                <a id="share-job" class="copyButton share-icon-text" data-url="http://127.0.0.1:8000{% url 'job_details' id %}">Share</a>
             </div>
         </div>
         {% else %}
@@ -135,6 +167,10 @@
         {% endif %}
     </div>    
 </body>
+
+<script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
+<script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
+<script src="{% static 'js/share-link.js' %}"></script>
 
 <script>
     jobDescription = document.getElementById("jobDescription").textContent;

@@ -95,6 +95,7 @@ def job_Details(request, pk):
     formatted_time_difference = format_timedelta(time_difference)
 
     job_details = {
+        'id':job_d.id,
         'title': job_d.title,
         'company': job_d.company,
         'location': job_d.location,
@@ -121,6 +122,7 @@ def jobDetails(request, pk):
     formatted_time_difference = format_timedelta(time_difference)
 
     job_details = {
+        'id':job_d.id,
         'title': job_d.title,
         'company': job_d.company,
         'location': job_d.location,

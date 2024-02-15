@@ -27,6 +27,34 @@
             font-family: Arial, sans-serif;
             background-color: #f3f3f3;
         }
+
+
+
+        .alert {
+            display: none;
+            padding: 15px;
+            border: 1px solid #4c50d3;
+            background-color: #c3e1ff;
+            color: #333;
+            position: fixed;
+            bottom: 15px;
+            right: 15px;
+            z-index: 9999;
+        }
+
+        .alert.show {
+            display: block;
+        }
+
+        .alert .close {
+            color: #000;
+            float: right;
+            font-size: 20px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        
         
         .contains {
             position: absolute;
@@ -84,5 +112,6 @@
 <script src="{% static 'js/app.js' %}"></script>
 <script src="{% static 'js/details-request.js' %}"></script>
 <script src="{% static 'js/sorting-job.js' %}"></script>
+<script src="{% static 'js/share-link.js' %}"></script>
 
 </html>
